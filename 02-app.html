@@ -155,11 +155,11 @@
 <script>
 
 // ============================================================================
-// CONFIGURACIÓN GLOBAL
+// CONFIGURACIÓN GLOBAL - ACTUALIZADA CON TUS TOKENS
 // ============================================================================
 
-const SUPABASE_URL = 'https://phrbxnpmbeffvkezzfbd.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Reemplazar
+const SUPABASE_URL = 'https://gbhxjjgtmwzakxkawzdx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiaHhqamd0bXd6YWt4a2F3emR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMzE5MjYsImV4cCI6MjA4OTkwNzkyNn0.TxPAAHGZPkgwsEDGmeXficzVRhU2DhkcQNAoZRZE22I';
 let supabase = null;
 let currentUser = null;
 let currentEmpresa = null;
@@ -172,6 +172,9 @@ let modulosActivos = {};
 window.addEventListener('DOMContentLoaded', async () => {
     // Inicializar Supabase
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    console.log('✓ Supabase inicializado');
+    console.log('URL:', SUPABASE_URL);
     
     // Verificar si ya hay sesión
     const token = localStorage.getItem('token');
