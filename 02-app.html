@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERPI - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .hidden-module { display: none; }
+        .active-module { display: block; }
+        .sidebar-item.active { @apply bg-purple-600 text-white; }
+        .sidebar-item { @apply px-4 py-3 cursor-pointer rounded hover:bg-white/10 transition; }
+        .badge-success { @apply px-3 py-1 bg-green-500/20 text-green-300 rounded text-sm; }
+        .badge-pending { @apply px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded text-sm; }
+        .badge-error { @apply px-3 py-1 bg-red-500/20 text-red-300 rounded text-sm; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+
+<!-- NAVBAR -->
+<nav class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold">⚡ ERPI</div>
+    <div class="flex items-center gap-6">
+        <div class="text-sm">
+            <span id="empresa-nombre">Cargando...</span>
+            <div id="usuario-email" class="text-xs text-gray-400">usuario@empresa.com</div>
+        </div>
+        <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition">
+            Logout
+        </button>
+    </div>
+</nav>
+
+<div class="flex h-screen">
+    
+    <!-- SIDEBAR -->
+    <div class="w-64 bg-slate-800 border-r border-slate-700 overflow-y-auto">
+        
+        <div class="p-4 border-b border-slate-700">
+            <h3 class="font-bold mb-3">Módulos</h3>
+            <input type="text" placeholder="Buscar..." id="search-modulos" 
+                class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-sm focus:outline-none focus:border-purple-500"
+            />
+        </div>
+
+        <div id="modulos-container" class="p-2">
+            <!-- Se llenan dinámicamente según la industria -->
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- HEADER SECUNDARIO -->
+        <div class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
+            <h2 id="modulo-titulo" class="text-xl font-bold">Bienvenido</h2>
+            <div class="flex gap-4">
+                <input type="date" class="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-sm focus:outline-none" />
+                <button class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded transition">
+                    Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENIDO -->
+        <div class="flex-1 overflow-y-auto p-6">
+            
+            <!-- LOGIN (mostrado al inicio) -->
+            <div id="login-container" class="flex items-center justify-center h-full">
+                <div class="bg-slate-800 border border-slate-700 rounded-lg p-8 max-w-md w-full">
+                    <h1 class="text-3xl font-bold mb-6 text-center">ERPI Login</h1>
+                    
+                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm mb-1">Email</label>
+                            <input type="email" id="login-email" placeholder="admin@empresa.com" 
+                                class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:border-purple-500"
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm mb-1">Password</label>
+                            <input type="password" id="login-password" placeholder="••••••••" 
+                                class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:border-purple-500"
+                                required
+                            />
+                        </div>
+
+                        <button type="submit" class="w-full py-2 bg-purple-600 hover:bg-purple-700 font-bold rounded transition">
+                            Entrar
+                        </button>
+
+                        <button type="button" onclick="mostrarSignup()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded transition">
+                            Crear Cuenta
+                        </button>
+                    </form>
+
+                    <div class="mt-6 p-4 bg-slate-700 rounded text-sm">
+                        <p class="font-bold mb-2">Demo:</p>
+                        <p>Email: demo@erpi.cloud</p>
+                        <p>Password: Demo2026*</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD (mostrado después de login) -->
+            <div id="dashboard-container" class="hidden space-y-6">
+                
+                <!-- Stats -->
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                        <div class="text-sm text-gray-400">Ventas Hoy</div>
+                        <div class="text-3xl font-bold mt-2">$0.00</div>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                        <div class="text-sm text-gray-400">Clientes</div>
+                        <div class="text-3xl font-bold mt-2">0</div>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                        <div class="text-sm text-gray-400">Inventario</div>
+                        <div class="text-3xl font-bold mt-2">0</div>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                        <div class="text-sm text-gray-400">IVA Pendiente</div>
+                        <div class="text-3xl font-bold mt-2 text-orange-400">$0.00</div>
+                    </div>
+                </div>
+
+                <!-- Tabla genérica (se remplaza por módulo) -->
+                <div id="modulo-contenido" class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                    <p class="text-gray-400">Selecciona un módulo para comenzar</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL SPINNER -->
+<div id="loading-spinner" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-slate-800 border border-slate-700 rounded-lg p-8 text-center">
+        <div class="mb-4">
+            <div class="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        </div>
+        <p id="spinner-text">Cargando...</p>
+    </div>
+</div>
+
+<script>
+
+// ============================================================================
+// CONFIGURACIÓN GLOBAL
+// ============================================================================
+
+const SUPABASE_URL = 'https://phrbxnpmbeffvkezzfbd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Reemplazar
+let supabase = null;
+let currentUser = null;
+let currentEmpresa = null;
+let modulosActivos = {};
+
+// ============================================================================
+// INICIALIZACIÓN
+// ============================================================================
+
+window.addEventListener('DOMContentLoaded', async () => {
+    // Inicializar Supabase
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    // Verificar si ya hay sesión
+    const token = localStorage.getItem('token');
+    if (token) {
+        await restaurarSesion();
+    } else {
+        mostrarLogin();
+    }
+});
+
+// ============================================================================
+// AUTENTICACIÓN
+// ============================================================================
+
+async function handleLogin(e) {
+    e.preventDefault();
+    mostrarSpinner('Validando credenciales...');
+
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    try {
+        // Simulación: En producción, validar contra Supabase
+        if (email === 'demo@erpi.cloud' && password === 'Demo2026*') {
+            
+            // Simular login exitoso
+            const usuario = {
+                id: 'user-001',
+                email: 'demo@erpi.cloud',
+                nombre: 'Demo User'
+            };
+            
+            const empresa = {
+                id: 'emp-001',
+                razon_social: 'Restaurante Demo',
+                giro: 'restaurante',
+                rfc: 'DEMO000000XXX'
+            };
+
+            // Guardar en localStorage
+            localStorage.setItem('token', 'demo-token-12345');
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            localStorage.setItem('empresa', JSON.stringify(empresa));
+
+            currentUser = usuario;
+            currentEmpresa = empresa;
+
+            // Activar módulos según giro
+            activarModulosSegunGiro(empresa.giro);
+
+            // Mostrar dashboard
+            mostrarDashboard();
+
+            ocultarSpinner();
+
+        } else {
+            alert('Credenciales inválidas');
+            ocultarSpinner();
+        }
+
+    } catch (error) {
+        alert('Error: ' + error.message);
+        ocultarSpinner();
+    }
+}
+
+async function restaurarSesion() {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const empresa = JSON.parse(localStorage.getItem('empresa'));
+    
+    if (usuario && empresa) {
+        currentUser = usuario;
+        currentEmpresa = empresa;
+        activarModulosSegunGiro(empresa.giro);
+        mostrarDashboard();
+    } else {
+        localStorage.clear();
+        mostrarLogin();
+    }
+}
+
+function logout() {
+    if (confirm('¿Estás seguro de que deseas logout?')) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// ============================================================================
+// UI - MOSTRAR/OCULTAR
+// ============================================================================
+
+function mostrarLogin() {
+    document.getElementById('login-container').classList.remove('hidden');
+    document.getElementById('dashboard-container').classList.add('hidden');
+}
+
+function mostrarDashboard() {
+    document.getElementById('login-container').classList.add('hidden');
+    document.getElementById('dashboard-container').classList.remove('hidden');
+    
+    // Actualizar header
+    document.getElementById('empresa-nombre').textContent = currentEmpresa.razon_social;
+    document.getElementById('usuario-email').textContent = currentUser.email;
+    
+    // Cargar módulos en sidebar
+    cargarModulosEnSidebar();
+}
+
+function mostrarSpinner(text = 'Cargando...') {
+    document.getElementById('loading-spinner').classList.remove('hidden');
+    document.getElementById('spinner-text').textContent = text;
+}
+
+function ocultarSpinner() {
+    document.getElementById('loading-spinner').classList.add('hidden');
+}
+
+// ============================================================================
+// MÓDULOS
+// ============================================================================
+
+function activarModulosSegunGiro(giro) {
+    // Según el giro, activar módulos específicos
+    const modulosPorGiro = {
+        'restaurante': [
+            { id: 'ventas', nombre: 'Ventas', icono: '💵' },
+            { id: 'mesas', nombre: 'Mesas', icono: '🪑' },
+            { id: 'cocina', nombre: 'Cocina', icono: '👨‍🍳' },
+            { id: 'inventario', nombre: 'Inventario', icono: '📦' },
+            { id: 'clientes', nombre: 'Clientes', icono: '👥' },
+            { id: 'contabilidad', nombre: 'Contabilidad', icono: '📊' },
+            { id: 'reportes', nombre: 'Reportes', icono: '📈' }
+        ],
+        'farmacia': [
+            { id: 'ventas', nombre: 'Ventas', icono: '💵' },
+            { id: 'inventario', nombre: 'Medicamentos', icono: '💊' },
+            { id: 'caducidad', nombre: 'Caducidad', icono: '⏰' },
+            { id: 'contabilidad', nombre: 'Contabilidad', icono: '📊' },
+            { id: 'reportes', nombre: 'Reportes', icono: '📈' }
+        ]
+    };
+
+    modulosActivos = modulosPorGiro[giro] || modulosPorGiro['restaurante'];
+}
+
+function cargarModulosEnSidebar() {
+    const container = document.getElementById('modulos-container');
+    container.innerHTML = '';
+
+    modulosActivos.forEach(modulo => {
+        const div = document.createElement('div');
+        div.className = 'sidebar-item';
+        div.innerHTML = `${modulo.icono} ${modulo.nombre}`;
+        div.onclick = () => cargarModulo(modulo.id, modulo.nombre);
+        container.appendChild(div);
+    });
+}
+
+async function cargarModulo(moduloId, moduloNombre) {
+    mostrarSpinner(`Cargando ${moduloNombre}...`);
+    
+    // Actualizar título
+    document.getElementById('modulo-titulo').textContent = moduloNombre;
+    
+    // Simular carga de contenido
+    setTimeout(() => {
+        
+        const html = obtenerHTMLModulo(moduloId);
+        document.getElementById('modulo-contenido').innerHTML = html;
+        
+        // Ejecutar listeners del módulo
+        ejecutarListenersModulo(moduloId);
+        
+        ocultarSpinner();
+    }, 500);
+}
+
+function obtenerHTMLModulo(moduloId) {
+    const modulos = {
+        'ventas': `
+            <div class="space-y-4">
+                <div class="flex justify-between">
+                    <h3 class="text-lg font-bold">Ventas</h3>
+                    <button onclick="abrirFormularioVenta()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded">
+                        + Nueva Venta
+                    </button>
+                </div>
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="text-left py-2">Número</th>
+                            <th class="text-left py-2">Cliente</th>
+                            <th class="text-left py-2">Fecha</th>
+                            <th class="text-left py-2">Total</th>
+                            <th class="text-left py-2">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ventas">
+                        <tr><td colspan="5" class="text-center py-4 text-gray-400">No hay ventas aún</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        `,
+        'inventario': `
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Inventario</h3>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="text-left py-2">Producto</th>
+                            <th class="text-left py-2">Stock</th>
+                            <th class="text-left py-2">Mínimo</th>
+                            <th class="text-left py-2">Máximo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="4" class="text-center py-4 text-gray-400">Sin productos</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        `,
+        'contabilidad': `
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Contabilidad</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-700 rounded p-4">
+                        <p class="text-sm text-gray-400">Total Débito</p>
+                        <p class="text-2xl font-bold">$0.00</p>
+                    </div>
+                    <div class="bg-slate-700 rounded p-4">
+                        <p class="text-sm text-gray-400">Total Crédito</p>
+                        <p class="text-2xl font-bold">$0.00</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-500/20 border border-yellow-500/50 rounded p-4">
+                    <p class="text-sm">💡 Las pólizas se generan automáticamente con cada venta.</p>
+                </div>
+            </div>
+        `,
+        'reportes': `
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Reportes</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <button class="p-4 bg-slate-700 hover:bg-slate-600 rounded text-left transition">
+                        <p class="font-bold">Estado de Resultados</p>
+                        <p class="text-sm text-gray-400">Ingresos, gastos, utilidad</p>
+                    </button>
+                    <button class="p-4 bg-slate-700 hover:bg-slate-600 rounded text-left transition">
+                        <p class="font-bold">Balance General</p>
+                        <p class="text-sm text-gray-400">Activos, pasivos, capital</p>
+                    </button>
+                </div>
+            </div>
+        `
+    };
+
+    return modulos[moduloId] || `<p class="text-gray-400">Módulo: ${moduloId}</p>`;
+}
+
+function ejecutarListenersModulo(moduloId) {
+    // Aquí irían listeners específicos de cada módulo
+}
+
+function abrirFormularioVenta() {
+    alert('Formulario de venta (próximamente)');
+}
+
+function mostrarSignup() {
+    alert('Página de signup (próximamente)');
+}
+
+</script>
+
+</body>
+</html>

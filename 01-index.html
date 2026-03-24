@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERPI - ERP Inteligente Multi-Industria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold gradient-text">⚡ ERPI</div>
+        <div class="space-x-4">
+            <a href="#features" class="hover:text-purple-400 transition">Features</a>
+            <a href="#pricing" class="hover:text-purple-400 transition">Pricing</a>
+            <button onclick="irASignup()" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition">Login</button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-3xl"></div>
+    <div class="max-w-4xl mx-auto text-center animate-fade-in relative z-10">
+        
+        <div class="mb-8">
+            <span class="inline-block px-4 py-2 bg-purple-500/20 rounded-full text-purple-300 text-sm font-semibold">
+                🚀 La IA que entiende tu negocio
+            </span>
+        </div>
+
+        <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+            ERP Inteligente que se adapta a 
+            <span class="gradient-text">tu industria</span>
+        </h1>
+
+        <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            No es un ERP genérico. Detecta automáticamente tu giro, genera obligaciones fiscales, 
+            activa módulos específicos. Todo cumpliendo 100% la ley mexicana.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <button onclick="irASignup()" class="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition text-lg">
+                Comenzar Gratis (30 días)
+            </button>
+            <button onclick="verDemo()" class="px-8 py-4 bg-white/10 border border-white/20 text-white font-bold rounded-lg hover:bg-white/20 transition text-lg">
+                Ver Demo en Vivo
+            </button>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-300">
+            <div>✓ 0 Setup requerido</div>
+            <div>✓ Pago automático ISR/IVA</div>
+            <div>✓ CFDI 4.0 incluido</div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-24 px-4 bg-black/50">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl font-bold text-center mb-20">Lo que te diferencia</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">🧠</div>
+                <h3 class="text-xl font-bold mb-2">Motor IA Inteligente</h3>
+                <p class="text-gray-300 mb-4">Tu 1ª transacción es suficiente para detectar tu giro.</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ Análisis automático (GPT-4)</li>
+                    <li>✓ 95%+ confianza</li>
+                    <li>✓ Cero configuración</li>
+                </ul>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">⚖️</div>
+                <h3 class="text-xl font-bold mb-2">Cumplimiento Fiscal Auto</h3>
+                <p class="text-gray-300 mb-4">ISR, IVA, CFDI. Todo se calcula automáticamente.</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ CFDI 4.0 automático</li>
+                    <li>✓ Retenciones calculadas</li>
+                    <li>✓ Reportes SAT listos</li>
+                </ul>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">🏭</div>
+                <h3 class="text-xl font-bold mb-2">10+ Industrias</h3>
+                <p class="text-gray-300 mb-4">Restaurante, Farmacia, Hotel, Clínica, Retail...</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ 28-40 módulos c/u</li>
+                    <li>✓ Validaciones específicas</li>
+                    <li>✓ Configuración automática</li>
+                </ul>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">☁️</div>
+                <h3 class="text-xl font-bold mb-2">100% Cloud</h3>
+                <p class="text-gray-300 mb-4">Auto-escala de 1 a 100,000 usuarios.</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ 99.95% SLA</li>
+                    <li>✓ Backups automáticos</li>
+                    <li>✓ Disaster recovery</li>
+                </ul>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-bold mb-2">Reportería Avanzada</h3>
+                <p class="text-gray-300 mb-4">Estado de Resultados, Balance, Flujo en tiempo real.</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ Reportes automáticos</li>
+                    <li>✓ Gráficos interactivos</li>
+                    <li>✓ Exportación Excel/PDF</li>
+                </ul>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8 hover:bg-white/10 transition">
+                <div class="text-4xl mb-4">🔒</div>
+                <h3 class="text-xl font-bold mb-2">Seguridad Enterprise</h3>
+                <p class="text-gray-300 mb-4">Encriptación E2E, MFA, Auditoría completa.</p>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>✓ Encriptación E2E</li>
+                    <li>✓ MFA habilitado</li>
+                    <li>✓ Logs inmutables</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INDUSTRIAS -->
+<section class="py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl font-bold text-center mb-20">Para todas las industrias</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg p-6">
+                <div class="text-3xl mb-2">🍽️</div>
+                <h3 class="font-bold mb-1">Restaurante</h3>
+                <p class="text-sm text-gray-300 mb-3">Mesas, cocina, delivery</p>
+                <div class="text-2xl font-bold text-purple-300">35</div>
+                <p class="text-xs text-gray-400">módulos</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg p-6">
+                <div class="text-3xl mb-2">💊</div>
+                <h3 class="font-bold mb-1">Farmacia</h3>
+                <p class="text-sm text-gray-300 mb-3">Medicamentos, caducidad</p>
+                <div class="text-2xl font-bold text-purple-300">33</div>
+                <p class="text-xs text-gray-400">módulos</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg p-6">
+                <div class="text-3xl mb-2">🏨</div>
+                <h3 class="font-bold mb-1">Hotel</h3>
+                <p class="text-sm text-gray-300 mb-3">Reservaciones, check-in</p>
+                <div class="text-2xl font-bold text-purple-300">31</div>
+                <p class="text-xs text-gray-400">módulos</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg p-6">
+                <div class="text-3xl mb-2">🏥</div>
+                <h3 class="font-bold mb-1">Clínica</h3>
+                <p class="text-sm text-gray-300 mb-3">Citas, pacientes</p>
+                <div class="text-2xl font-bold text-purple-300">30</div>
+                <p class="text-xs text-gray-400">módulos</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg p-6">
+                <div class="text-3xl mb-2">🛍️</div>
+                <h3 class="font-bold mb-1">Retail</h3>
+                <p class="text-sm text-gray-300 mb-3">POS, inventario</p>
+                <div class="text-2xl font-bold text-purple-300">40</div>
+                <p class="text-xs text-gray-400">módulos</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-24 px-4 bg-black/50">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-5xl font-bold text-center mb-20">Planes Simples</h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Plan 1 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8">
+                <h3 class="text-2xl font-bold mb-4">Starter</h3>
+                <div class="mb-6">
+                    <span class="text-5xl font-bold">$299</span>
+                    <span class="text-gray-400">/mes</span>
+                </div>
+                <ul class="space-y-3 text-sm mb-8">
+                    <li>✓ 1-5 usuarios</li>
+                    <li>✓ 1 industria</li>
+                    <li>✓ Reconocimiento IA</li>
+                    <li>✓ CFDI 4.0</li>
+                    <li>✓ Soporte email</li>
+                </ul>
+                <button onclick="irASignup()" class="w-full py-2 bg-purple-500/20 border border-purple-500 text-white rounded hover:bg-purple-500/30 transition">
+                    Comenzar
+                </button>
+            </div>
+
+            <!-- Plan 2 (Destacado) -->
+            <div class="bg-gradient-to-br from-purple-600 to-pink-600 border-2 border-purple-400 rounded-lg p-8 scale-105 shadow-2xl shadow-purple-500/50">
+                <h3 class="text-2xl font-bold mb-4">Professional</h3>
+                <div class="mb-6">
+                    <span class="text-5xl font-bold">$899</span>
+                    <span class="text-gray-200">/mes</span>
+                </div>
+                <ul class="space-y-3 text-sm mb-8">
+                    <li>✓ 10-50 usuarios</li>
+                    <li>✓ Todas industrias</li>
+                    <li>✓ Todo en Starter +</li>
+                    <li>✓ API access</li>
+                    <li>✓ Soporte prioritario</li>
+                </ul>
+                <button onclick="irASignup()" class="w-full py-2 bg-white text-purple-600 rounded font-bold hover:bg-gray-200 transition">
+                    Comenzar
+                </button>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-8">
+                <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+                <div class="mb-6">
+                    <span class="text-5xl font-bold">$2,499</span>
+                    <span class="text-gray-400">/mes</span>
+                </div>
+                <ul class="space-y-3 text-sm mb-8">
+                    <li>✓ Usuarios ilimitados</li>
+                    <li>✓ Todas industrias</li>
+                    <li>✓ Todo en Professional +</li>
+                    <li>✓ SLA 99.95%</li>
+                    <li>✓ Soporte 24/7</li>
+                </ul>
+                <button onclick="irASignup()" class="w-full py-2 bg-purple-500/20 border border-purple-500 text-white rounded hover:bg-purple-500/30 transition">
+                    Comenzar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-5xl font-bold mb-6">¿Listo para transformar tu negocio?</h2>
+        <p class="text-xl text-gray-300 mb-12">30 días gratis. Sin tarjeta de crédito. Sin compromiso.</p>
+        
+        <button onclick="irASignup()" class="px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition text-lg">
+            Crear Cuenta Gratis
+        </button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12 px-4 border-t border-white/10 bg-black/50">
+    <div class="max-w-6xl mx-auto text-center text-gray-400">
+        <p>© 2026 ERPI - ERP Inteligente. Hecho para México. 🇲🇽</p>
+        <p class="mt-4 text-sm">Soporte: support@erpi.cloud | Documentación: docs.erpi.cloud</p>
+    </div>
+</footer>
+
+<script>
+function irASignup() {
+    // Cambiar a página de signup (para después)
+    window.location.href = '/dashboard/app.html';
+}
+
+function verDemo() {
+    alert('Demo en vivo: Acceso con demo@erpi.cloud / Demo2026*');
+    window.location.href = '/dashboard/app.html';
+}
+</script>
+
+</body>
+</html>
